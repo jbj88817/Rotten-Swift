@@ -21,12 +21,13 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         session.dataTaskWithRequest(request,
             completionHandler: {(data: NSData!, response: NSURLResponse!, error: NSError!) in
 
-                if error == nil {
+                if error != nil {
 
                     dispatch_async(dispatch_get_main_queue()) {
                         var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
                         self.movies = object["movies"] as [NSDictionary]
-                        self.tableView.reloadData()                    }
+                        self.tableView.reloadData()
+                    }
                 }
                 else {
                     self.showNetworkError()
@@ -39,7 +40,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         dispatch_async(dispatch_get_main_queue()) {
             self.networkErrorView.alpha = 1
             let offset = 3.0
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(offset * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+            UIView.animateWithDuration(offset, animations: {
                 self.networkErrorView.alpha = 0
             })
         }
@@ -77,7 +78,21 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         var posters = movie["posters"] as NSDictionary
         var posterUrl = posters["thumbnail"] as String
 
-        cell.posterView.setImageWithURL(NSURL(string: posterUrl))
+        var image = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(posterUrl)
+        if image != nil {
+            println("cached in disk")
+            cell.posterView.image = image
+            return cell
+        }
+
+        SDWebImageDownloader.sharedDownloader().downloadImageWithURL(NSURL(string: posterUrl), options: nil, progress: nil, completed: {[weak self] (image, data, error, finished) in
+            if let wSelf = self {
+                if image != nil {
+                    cell.posterView.image = image
+                    SDImageCache.sharedImageCache().storeImage(image, forKey: posterUrl, toDisk: true)
+                }
+            }
+        })
 
         return cell
     }

@@ -33,6 +33,8 @@ class DetailViewController: UIViewController {
 
         var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
 
+        println(movieId)
+
         var request = NSURLRequest(URL:NSURL(string: detailURL))
 
         var session = NSURLSession.sharedSession()
@@ -45,12 +47,29 @@ class DetailViewController: UIViewController {
                         var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
                         self.movie = object as NSDictionary
                         var posters = self.movie["posters"] as NSDictionary
-                        var posterURL = posters["original"] as String
+                        var posterUrl = posters["original"] as String
+
+                        println(posterUrl)
 
                         self.navigationItem.title = self.movie["title"] as? String
                         self.titleLabel.text = self.movie["title"] as? String
                         self.synopsisLabel.text = self.movie["synopsis"] as? String
-                        self.detailPosterView.setImageWithURL(NSURL(string: posterURL))
+
+                        var image = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(posterUrl)
+                        if image != nil {
+                            println("cached in disk - detail view")
+                            self.detailPosterView.image = image
+                        }
+                        else {
+                            SDWebImageDownloader.sharedDownloader().downloadImageWithURL(NSURL(string: posterUrl), options: nil, progress: nil, completed: {[weak self] (image, data, error, finished) in
+                                if let wSelf = self {
+                                    if image != nil {
+                                        wSelf.detailPosterView.image = image
+                                        SDImageCache.sharedImageCache().storeImage(image, forKey: posterUrl, toDisk: true)
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
                 else {
@@ -70,7 +89,7 @@ class DetailViewController: UIViewController {
         dispatch_async(dispatch_get_main_queue()) {
             self.networkErrorView.alpha = 1
             let offset = 3.0
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(offset * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+            UIView.animateWithDuration(offset, animations: {
                 self.networkErrorView.alpha = 0
             })
         }
