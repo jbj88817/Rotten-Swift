@@ -79,10 +79,19 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         return movies.count
     }
 
+    func fadeInImage (view :UIView) {
+        let movieCell = view as MovieCell
+        UIView.beginAnimations("fade in", context: nil)
+        UIView.setAnimationDuration(1.5)
+        movieCell.posterView.alpha = 1
+        UIView.commitAnimations()
+    }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
         cell.accessoryType = UITableViewCellAccessoryType.None
+        cell.posterView.alpha = 0
+
         var movie = movies[indexPath.row]
         cell.movieTitleLabel.text = movie["title"] as? String
         cell.synopsisLabel.text = movie["synopsis"] as? String
@@ -94,6 +103,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         if image != nil {
             println("cached in disk")
             cell.posterView.image = image
+            fadeInImage(cell)
             return cell
         }
 
@@ -107,6 +117,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             if let wSelf = self {
                 if image != nil {
                     cell.posterView.image = image
+                    wSelf.fadeInImage(cell)
                     SDImageCache.sharedImageCache().storeImage(image, forKey: posterUrl, toDisk: true)
                 }
             }

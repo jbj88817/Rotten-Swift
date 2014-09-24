@@ -29,12 +29,12 @@ class DetailViewController: UIViewController {
 
         MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
 
-        networkErrorView.alpha = 0;
+        networkErrorView.alpha = 0
         networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
 
-        var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
+        detailPosterView.alpha = 0
 
-        println(movieId)
+        var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
 
         var request = NSURLRequest(URL:NSURL(string: detailURL))
 
@@ -50,8 +50,6 @@ class DetailViewController: UIViewController {
                         var posters = self.movie["posters"] as NSDictionary
                         var posterUrl = posters["original"] as String
 
-                        println(posterUrl)
-
                         self.navigationItem.title = self.movie["title"] as? String
                         self.titleLabel.text = self.movie["title"] as? String
                         self.synopsisLabel.text = self.movie["synopsis"] as? String
@@ -61,6 +59,7 @@ class DetailViewController: UIViewController {
                             MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
                             println("cached in disk - detail view")
                             self.detailPosterView.image = image
+                            self.fadeInImage()
                         }
                         else {
                             SDWebImageDownloader.sharedDownloader().downloadImageWithURL(NSURL(string: posterUrl), options: nil, progress: nil, completed: {[weak self] (image, data, error, finished) in
@@ -68,6 +67,7 @@ class DetailViewController: UIViewController {
                                     MRProgressOverlayView.dismissOverlayForView(wSelf.view, animated: false)
                                     if image != nil {
                                         wSelf.detailPosterView.image = image
+                                        wSelf.fadeInImage()
                                         SDImageCache.sharedImageCache().storeImage(image, forKey: posterUrl, toDisk: true)
                                     }
                                 }
@@ -87,6 +87,13 @@ class DetailViewController: UIViewController {
         titleLabel.textColor = UIColor.whiteColor()
         synopsisLabel.textColor = UIColor.whiteColor()
 
+    }
+
+    func fadeInImage () {
+        UIView.beginAnimations("fade in", context: nil)
+        UIView.setAnimationDuration(1.5)
+        self.detailPosterView.alpha = 1
+        UIView.commitAnimations()
     }
 
     func showNetworkError() {
