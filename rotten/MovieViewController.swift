@@ -6,22 +6,32 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     var movies:[NSDictionary]=[]
 
+    var refreshControl = UIRefreshControl()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
 
-        self.networkErrorView.alpha = 0;
-        self.networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
+        networkErrorView.alpha = 0;
+        networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
 
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Updating Movie List...")
+        refreshControl.addTarget(self, action: "refreshMovieList", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl)
+
+        refreshMovieList()
+    }
+
+    func refreshMovieList() {
         var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=renaqk7mwx4v3vfj3g67xmcj&limit=20&country=us"
         var request = NSURLRequest(URL: NSURL(string:url))
         var session = NSURLSession.sharedSession()
         session.dataTaskWithRequest(request,
             completionHandler: {(data: NSData!, response: NSURLResponse!, error: NSError!) in
-
-                if error != nil {
+                self.refreshControl.endRefreshing()
+                if error == nil {
 
                     dispatch_async(dispatch_get_main_queue()) {
                         var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
@@ -32,7 +42,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                 else {
                     self.showNetworkError()
                 }
-                
+
         }).resume()
     }
 
@@ -69,8 +79,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         return movies.count
     }
 
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
+        cell.accessoryType = UITableViewCellAccessoryType.None
         var movie = movies[indexPath.row]
         cell.movieTitleLabel.text = movie["title"] as? String
         cell.synopsisLabel.text = movie["synopsis"] as? String
@@ -85,7 +97,13 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
             return cell
         }
 
+        var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        cell.posterView.addSubview(activityIndicator)
+        activityIndicator.center = cell.posterView.center
+        activityIndicator.startAnimating()
+
         SDWebImageDownloader.sharedDownloader().downloadImageWithURL(NSURL(string: posterUrl), options: nil, progress: nil, completed: {[weak self] (image, data, error, finished) in
+            activityIndicator.removeFromSuperview()
             if let wSelf = self {
                 if image != nil {
                     cell.posterView.image = image

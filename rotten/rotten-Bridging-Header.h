@@ -4,7 +4,9 @@
 
 #import "SDWebImage/UIImageView+WebCache.h"
 #import "AFNetworking.h"
+#import "MRProgress.h"
 
 @interface AFImageResponseSerializer (CustomInit)
 + (instancetype)sharedSerializer;
 @end
+

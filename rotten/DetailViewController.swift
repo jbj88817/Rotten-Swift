@@ -18,7 +18,6 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var synopsisLabel: UILabel!
 
-
     @IBOutlet weak var networkErrorView: UIView!
     
     var movieId: String = ""
@@ -28,8 +27,10 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.networkErrorView.alpha = 0;
-        self.networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
+        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+
+        networkErrorView.alpha = 0;
+        networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
 
         var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
 
@@ -57,12 +58,14 @@ class DetailViewController: UIViewController {
 
                         var image = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(posterUrl)
                         if image != nil {
+                            MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
                             println("cached in disk - detail view")
                             self.detailPosterView.image = image
                         }
                         else {
                             SDWebImageDownloader.sharedDownloader().downloadImageWithURL(NSURL(string: posterUrl), options: nil, progress: nil, completed: {[weak self] (image, data, error, finished) in
                                 if let wSelf = self {
+                                    MRProgressOverlayView.dismissOverlayForView(wSelf.view, animated: false)
                                     if image != nil {
                                         wSelf.detailPosterView.image = image
                                         SDImageCache.sharedImageCache().storeImage(image, forKey: posterUrl, toDisk: true)
@@ -73,6 +76,7 @@ class DetailViewController: UIViewController {
                     }
                 }
                 else {
+                    MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
                     self.showNetworkError()
                 }
 
