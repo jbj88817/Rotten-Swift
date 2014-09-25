@@ -76,7 +76,6 @@ class DetailViewController: UIViewController {
                     }
                 }
                 else {
-                    MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
                     self.showNetworkError()
                 }
 
@@ -98,6 +97,8 @@ class DetailViewController: UIViewController {
 
     func showNetworkError() {
         dispatch_async(dispatch_get_main_queue()) {
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
+
             self.networkErrorView.alpha = 1
             let offset = 3.0
             UIView.animateWithDuration(offset, animations: {

@@ -17,8 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
 
-//        var URLCache = NSURLCache(memoryCapacity: 0, diskCapacity: 50*1024*1024, diskPath: nil)
-//        NSURLCache.setSharedURLCache(URLCache)
+        application.statusBarStyle = .LightContent
+
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor.colorWithRGBHex(0xFFCC00)]
+        UINavigationBar.appearance().titleTextAttributes = titleDict
+
+        UINavigationBar.appearance().tintColor = UIColor.colorWithRGBHex(0xFFCC00)
+        UINavigationBar.appearance().setBackgroundImage(UIColor.imageWithColor(UIColor.blackColor()), forBarMetrics: UIBarMetrics.Default)
+        UINavigationBar.appearance().shadowImage = UIColor.imageWithColor(UIColor.blackColor())
+        UINavigationBar.appearance().translucent = true
+
         return true
     }
 
@@ -43,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 

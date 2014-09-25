@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		85073A7519D1F5E70065351E /* rotten-Bridging-Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 85073A7419D1F5E70065351E /* rotten-Bridging-Header.m */; };
 		8520376619CF690A008D1F37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520376519CF690A008D1F37 /* AppDelegate.swift */; };
-		8520376819CF690A008D1F37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520376719CF690A008D1F37 /* ViewController.swift */; };
 		8520376B19CF690A008D1F37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8520376919CF690A008D1F37 /* Main.storyboard */; };
 		8520376D19CF690A008D1F37 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8520376C19CF690A008D1F37 /* Images.xcassets */; };
 		8520377019CF690A008D1F37 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8520376E19CF690A008D1F37 /* LaunchScreen.xib */; };
 		8520377C19CF690A008D1F37 /* rottenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520377B19CF690A008D1F37 /* rottenTests.swift */; };
 		8520378619CF6934008D1F37 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520378519CF6934008D1F37 /* MovieViewController.swift */; };
 		8520378819CF6D24008D1F37 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520378719CF6D24008D1F37 /* MovieCell.swift */; };
+		8544E66519D4D1E7004B1531 /* RottenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8544E66419D4D1E7004B1531 /* RottenExtensions.swift */; };
 		855C4DB319D4AF7400EA1E1F /* MovieCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 855C4DB219D4AF7400EA1E1F /* MovieCell.xib */; };
 		85A3C32E19D0E73600555161 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A3C32D19D0E73600555161 /* DetailViewController.swift */; };
 		8C5BFDFDB6A54C0AA66735E2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C789A835554F90A80D1F93 /* libPods.a */; };
@@ -38,7 +38,6 @@
 		8520376019CF690A008D1F37 /* rotten.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rotten.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8520376419CF690A008D1F37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8520376519CF690A008D1F37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8520376719CF690A008D1F37 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8520376A19CF690A008D1F37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8520376C19CF690A008D1F37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8520376F19CF690A008D1F37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -48,6 +47,7 @@
 		8520378519CF6934008D1F37 /* MovieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		8520378719CF6D24008D1F37 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		8520378919CF754E008D1F37 /* rotten-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rotten-Bridging-Header.h"; sourceTree = "<group>"; };
+		8544E66419D4D1E7004B1531 /* RottenExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RottenExtensions.swift; sourceTree = "<group>"; };
 		855C4DB219D4AF7400EA1E1F /* MovieCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieCell.xib; sourceTree = "<group>"; };
 		85A3C32D19D0E73600555161 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,12 +95,12 @@
 			isa = PBXGroup;
 			children = (
 				8520376519CF690A008D1F37 /* AppDelegate.swift */,
-				8520376719CF690A008D1F37 /* ViewController.swift */,
 				8520376919CF690A008D1F37 /* Main.storyboard */,
 				8520378519CF6934008D1F37 /* MovieViewController.swift */,
 				85A3C32D19D0E73600555161 /* DetailViewController.swift */,
 				8520378719CF6D24008D1F37 /* MovieCell.swift */,
 				855C4DB219D4AF7400EA1E1F /* MovieCell.xib */,
+				8544E66419D4D1E7004B1531 /* RottenExtensions.swift */,
 				8520376C19CF690A008D1F37 /* Images.xcassets */,
 				8520376E19CF690A008D1F37 /* LaunchScreen.xib */,
 				8520376319CF690A008D1F37 /* Supporting Files */,
@@ -279,8 +279,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8520376819CF690A008D1F37 /* ViewController.swift in Sources */,
 				8520376619CF690A008D1F37 /* AppDelegate.swift in Sources */,
+				8544E66519D4D1E7004B1531 /* RottenExtensions.swift in Sources */,
 				85A3C32E19D0E73600555161 /* DetailViewController.swift in Sources */,
 				8520378819CF6D24008D1F37 /* MovieCell.swift in Sources */,
 				85073A7519D1F5E70065351E /* rotten-Bridging-Header.m in Sources */,

@@ -1,5 +1,13 @@
 import UIKit
 
+extension Int {
+    func times(task: () -> ()) {
+        for _ in 0...self {
+            task()
+        }
+    }
+}
+
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     @IBOutlet weak var tableView: UITableView!
 
@@ -11,6 +19,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     var refreshControl = UIRefreshControl()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,6 +28,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         networkErrorView.alpha = 0;
         networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
+
+        searchDisplayController!.searchBar.barTintColor = UIColor.blackColor()
 
         self.refreshControl.attributedTitle = NSAttributedString(string: "Updating Movie List...")
         refreshControl.addTarget(self, action: "refreshMovieList", forControlEvents: UIControlEvents.ValueChanged)
@@ -40,19 +51,17 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         session.dataTaskWithRequest(request,
             completionHandler: {(data: NSData!, response: NSURLResponse!, error: NSError!) in
                 self.refreshControl.endRefreshing()
-                MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
 
                 if error == nil {
 
                     dispatch_async(dispatch_get_main_queue()) {
+                        MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
                         var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
                         self.movies = object["movies"] as [NSDictionary]
                         self.tableView.reloadData()
                     }
                 }
                 else {
-                    MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
-
                     self.showNetworkError()
                 }
 
@@ -91,6 +100,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     func showNetworkError() {
         dispatch_async(dispatch_get_main_queue()) {
+            MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
+
             self.networkErrorView.alpha = 1
             let offset = 3.0
             UIView.animateWithDuration(offset, animations: {
@@ -107,22 +118,14 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
 
     func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool {
-//        let scopes = self.searchDisplayController!.searchBar.scopeButtonTitles as [String]
-//        let selectedScope = scopes[self.searchDisplayController!.searchBar.selectedScopeButtonIndex] as String
-//        self.filterContentForSearchText(searchString, scope: selectedScope)
         self.filterContentForSearchText(searchString, scope: "")
         return true
     }
 
     func searchDisplayController(controller: UISearchDisplayController!,
         shouldReloadTableForSearchScope searchOption: Int) -> Bool {
-//            let scope = self.searchDisplayController!.searchBar.scopeButtonTitles as [String]
-//            self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: scope[searchOption])
-
-//            searchMovie(self.searchDisplayController!.searchBar.text)
-
-            self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: "")
-            return true
+        self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: "")
+        return true
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -210,6 +213,4 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         return cell
     }
-
-
 }
