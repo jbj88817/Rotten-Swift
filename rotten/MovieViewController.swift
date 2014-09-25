@@ -1,10 +1,13 @@
 import UIKit
-class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var networkErrorView: UIView!
 
-    var movies:[NSDictionary]=[]
+    var movies :[NSDictionary]=[]
+
+    var filterMovies :[NSDictionary]=[]
 
     var refreshControl = UIRefreshControl()
 
@@ -21,22 +24,62 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         refreshControl.addTarget(self, action: "refreshMovieList", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
 
+        tableView.registerNib(UINib(nibName: "MovieCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
+
+        searchDisplayController!.searchResultsTableView.registerNib(UINib(nibName: "MovieCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
+
         refreshMovieList()
     }
 
     func refreshMovieList() {
+        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+
         var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=renaqk7mwx4v3vfj3g67xmcj&limit=20&country=us"
         var request = NSURLRequest(URL: NSURL(string:url))
         var session = NSURLSession.sharedSession()
         session.dataTaskWithRequest(request,
             completionHandler: {(data: NSData!, response: NSURLResponse!, error: NSError!) in
                 self.refreshControl.endRefreshing()
+                MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
+
                 if error == nil {
 
                     dispatch_async(dispatch_get_main_queue()) {
                         var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
                         self.movies = object["movies"] as [NSDictionary]
                         self.tableView.reloadData()
+                    }
+                }
+                else {
+                    MRProgressOverlayView.dismissOverlayForView(self.view, animated: false)
+
+                    self.showNetworkError()
+                }
+
+        }).resume()
+
+    }
+
+
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        if (searchText.isEmpty) {
+            return
+        }
+
+        var searchURL = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=" + searchText + "&page_limit=10&page=1&apikey=renaqk7mwx4v3vfj3g67xmcj"
+        var request = NSURLRequest(URL: NSURL(string:searchURL))
+        var session = NSURLSession.sharedSession()
+        session.dataTaskWithRequest(request,
+            completionHandler: {(data: NSData!, response: NSURLResponse!, error: NSError!) in
+
+                if error == nil {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
+                        var movieArray = object["movies"] as? [NSDictionary]
+                        if let mArray = movieArray {
+                            self.filterMovies = mArray
+                            self.searchDisplayController!.searchResultsTableView.reloadData()
+                        }
                     }
                 }
                 else {
@@ -62,8 +105,34 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
 
+
+    func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool {
+//        let scopes = self.searchDisplayController!.searchBar.scopeButtonTitles as [String]
+//        let selectedScope = scopes[self.searchDisplayController!.searchBar.selectedScopeButtonIndex] as String
+//        self.filterContentForSearchText(searchString, scope: selectedScope)
+        self.filterContentForSearchText(searchString, scope: "")
+        return true
+    }
+
+    func searchDisplayController(controller: UISearchDisplayController!,
+        shouldReloadTableForSearchScope searchOption: Int) -> Bool {
+//            let scope = self.searchDisplayController!.searchBar.scopeButtonTitles as [String]
+//            self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: scope[searchOption])
+
+//            searchMovie(self.searchDisplayController!.searchBar.text)
+
+            self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: "")
+            return true
+    }
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var movie = movies[indexPath.row]
+        var movie :NSDictionary = NSDictionary()
+        if tableView == self.searchDisplayController!.searchResultsTableView {
+            movie = filterMovies[indexPath.row]
+        }
+        else {
+            movie = movies[indexPath.row]
+        }
         var movieId = movie["id"] as String
         performSegueWithIdentifier("detailView", sender: movieId)
     }
@@ -75,8 +144,16 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
 
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 129.0
+    }
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return movies.count
+        if tableView == self.searchDisplayController!.searchResultsTableView {
+            return filterMovies.count
+        } else {
+            return movies.count
+        }
     }
 
     func fadeInImage (view :UIView) {
@@ -89,10 +166,18 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
+
         cell.accessoryType = UITableViewCellAccessoryType.None
         cell.posterView.alpha = 0
 
-        var movie = movies[indexPath.row]
+        var movie :NSDictionary = NSDictionary()
+
+        if tableView == self.searchDisplayController!.searchResultsTableView {
+            movie = filterMovies[indexPath.row]
+        } else {
+            movie = movies[indexPath.row]
+        }
+
         cell.movieTitleLabel.text = movie["title"] as? String
         cell.synopsisLabel.text = movie["synopsis"] as? String
 

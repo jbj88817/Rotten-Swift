@@ -16,6 +16,7 @@
 		8520377C19CF690A008D1F37 /* rottenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520377B19CF690A008D1F37 /* rottenTests.swift */; };
 		8520378619CF6934008D1F37 /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520378519CF6934008D1F37 /* MovieViewController.swift */; };
 		8520378819CF6D24008D1F37 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8520378719CF6D24008D1F37 /* MovieCell.swift */; };
+		855C4DB319D4AF7400EA1E1F /* MovieCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 855C4DB219D4AF7400EA1E1F /* MovieCell.xib */; };
 		85A3C32E19D0E73600555161 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A3C32D19D0E73600555161 /* DetailViewController.swift */; };
 		8C5BFDFDB6A54C0AA66735E2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70C789A835554F90A80D1F93 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		8520378519CF6934008D1F37 /* MovieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
 		8520378719CF6D24008D1F37 /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		8520378919CF754E008D1F37 /* rotten-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rotten-Bridging-Header.h"; sourceTree = "<group>"; };
+		855C4DB219D4AF7400EA1E1F /* MovieCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MovieCell.xib; sourceTree = "<group>"; };
 		85A3C32D19D0E73600555161 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 				8520378519CF6934008D1F37 /* MovieViewController.swift */,
 				85A3C32D19D0E73600555161 /* DetailViewController.swift */,
 				8520378719CF6D24008D1F37 /* MovieCell.swift */,
+				855C4DB219D4AF7400EA1E1F /* MovieCell.xib */,
 				8520376C19CF690A008D1F37 /* Images.xcassets */,
 				8520376E19CF690A008D1F37 /* LaunchScreen.xib */,
 				8520376319CF690A008D1F37 /* Supporting Files */,
@@ -224,6 +227,7 @@
 			files = (
 				8520376B19CF690A008D1F37 /* Main.storyboard in Resources */,
 				8520377019CF690A008D1F37 /* LaunchScreen.xib in Resources */,
+				855C4DB319D4AF7400EA1E1F /* MovieCell.xib in Resources */,
 				8520376D19CF690A008D1F37 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
