@@ -10,9 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    @IBOutlet weak var contentView: UIView!
-
-    @IBOutlet weak var detailPosterView: UIImageView!
 
     @IBOutlet weak var titleLabel: UILabel!
 
@@ -20,6 +17,10 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var networkErrorView: UIView!
     
+    @IBOutlet weak var detailScrollView: UIScrollView!
+
+    @IBOutlet weak var detailPosterView: UIImageView!
+
     var movieId: String = ""
 
     var movie: NSDictionary = [:]
@@ -33,6 +34,9 @@ class DetailViewController: UIViewController {
         networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
 
         detailPosterView.alpha = 0
+
+        self.detailScrollView.alpha = 0.7
+        self.detailScrollView.backgroundColor = UIColor.blackColor()
 
         var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
 
@@ -57,6 +61,9 @@ class DetailViewController: UIViewController {
                         self.navigationItem.title = self.movie["title"] as? String
                         self.titleLabel.text = self.movie["title"] as? String
                         self.synopsisLabel.text = self.movie["synopsis"] as? String
+                        self.synopsisLabel.sizeToFit()
+
+                        self.detailScrollView.contentSize = CGSizeMake(self.detailScrollView.frame.size.width, CGRectGetMaxY(self.synopsisLabel.frame))
 
                         var image = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(posterUrl)
                         if image != nil {
@@ -84,8 +91,6 @@ class DetailViewController: UIViewController {
                 }
 
         }).resume()
-
-        contentView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
 
         titleLabel.textColor = UIColor.whiteColor()
         synopsisLabel.textColor = UIColor.whiteColor()

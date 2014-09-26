@@ -72,31 +72,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="tOX-90-oFa">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ejA-GG-jhs">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" id="Cro-Rx-ihA">
-                                <rect key="frame" x="0.0" y="350" width="320" height="220"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="oEi-Q8-eje">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T0Y-sh-RLm">
-                                        <rect key="frame" x="21" y="15" width="282" height="21"/>
+                                        <rect key="frame" x="20" y="370" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EcW-UW-R6C">
-                                        <rect key="frame" x="21" y="57" width="282" height="144"/>
+                                        <rect key="frame" x="20" y="400" width="280" height="112"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                            </scrollView>
                             <view contentMode="scaleToFill" id="MJ3-NU-u7W">
                                 <rect key="frame" x="0.0" y="64" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
@@ -114,10 +113,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="AZS-t0-Y7w"/>
+                    <navigationItem key="navigationItem" id="g8f-Lh-tPj"/>
                     <connections>
-                        <outlet property="contentView" destination="Cro-Rx-ihA" id="PvU-xG-UL1"/>
-                        <outlet property="detailPosterView" destination="tOX-90-oFa" id="BIn-oz-nKb"/>
+                        <outlet property="detailPosterView" destination="ejA-GG-jhs" id="Ltn-fX-FCx"/>
+                        <outlet property="detailScrollView" destination="oEi-Q8-eje" id="41z-mS-DYo"/>
                         <outlet property="networkErrorView" destination="MJ3-NU-u7W" id="cEo-Vw-bXm"/>
                         <outlet property="synopsisLabel" destination="EcW-UW-R6C" id="fO8-aL-AZ8"/>
                         <outlet property="titleLabel" destination="T0Y-sh-RLm" id="Px7-ER-bp5"/>
