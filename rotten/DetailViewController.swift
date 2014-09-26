@@ -21,6 +21,8 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var detailPosterView: UIImageView!
 
+    @IBOutlet weak var detailContentView: UIView!
+    
     var movieId: String = ""
 
     var movie: NSDictionary = [:]
@@ -28,7 +30,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+        var progressView = MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+        progressView.tintColor = UIColor.colorWithRGBHex(0xFFCC00)
 
         networkErrorView.alpha = 0
         networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
@@ -36,7 +39,9 @@ class DetailViewController: UIViewController {
         detailPosterView.alpha = 0
 
         self.detailScrollView.alpha = 0.7
-        self.detailScrollView.backgroundColor = UIColor.blackColor()
+        self.detailScrollView.backgroundColor = UIColor.clearColor()
+
+        self.detailContentView.backgroundColor = UIColor.blackColor()
 
         var detailURL = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + movieId + ".json?apikey=dagqdghwaq3e3mxyrp7kmmj5"
 
@@ -63,7 +68,9 @@ class DetailViewController: UIViewController {
                         self.synopsisLabel.text = self.movie["synopsis"] as? String
                         self.synopsisLabel.sizeToFit()
 
-                        self.detailScrollView.contentSize = CGSizeMake(self.detailScrollView.frame.size.width, CGRectGetMaxY(self.synopsisLabel.frame))
+                        self.detailContentView.frame = CGRectMake(CGRectGetMinX(self.detailContentView.frame), CGRectGetMinY(self.detailContentView.frame), CGRectGetWidth(self.detailContentView.frame), CGRectGetMaxY(self.synopsisLabel.frame))
+
+                        self.detailScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.detailScrollView.frame), CGRectGetMaxY(self.synopsisLabel.frame))
 
                         var image = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(posterUrl)
                         if image != nil {

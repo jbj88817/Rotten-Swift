@@ -1,13 +1,5 @@
 import UIKit
 
-extension Int {
-    func times(task: () -> ()) {
-        for _ in 0...self {
-            task()
-        }
-    }
-}
-
 class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     @IBOutlet weak var tableView: UITableView!
 
@@ -51,7 +43,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     func refreshMovieList() {
-        MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+        var progressView = MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
+        progressView.tintColor = UIColor.colorWithRGBHex(0xFFCC00)
 
         var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=renaqk7mwx4v3vfj3g67xmcj&limit=20&country=us"
         var request = NSURLRequest(URL: NSURL(string:url))
