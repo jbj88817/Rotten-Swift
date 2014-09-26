@@ -1,9 +1,11 @@
 import UIKit
 
-class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
+class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UITabBarDelegate {
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var networkErrorView: UIView!
+
+    @IBOutlet weak var tabBar: UITabBar!
 
     var movies :[NSDictionary]=[]
 
@@ -11,12 +13,12 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     var refreshControl = UIRefreshControl()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
+        tabBar.delegate = self
 
         networkErrorView.alpha = 0;
         networkErrorView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
@@ -32,6 +34,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         searchDisplayController!.searchResultsTableView.registerNib(UINib(nibName: "MovieCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
 
+        tabBar.selectedItem = tabBar.items?.first as? UITabBarItem
         refreshMovieList()
     }
 
@@ -46,7 +49,15 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         var progressView = MRProgressOverlayView.showOverlayAddedTo(self.view, animated: false)
         progressView.tintColor = UIColor.colorWithRGBHex(0xFFCC00)
 
-        var url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=renaqk7mwx4v3vfj3g67xmcj&limit=20&country=us"
+        var url = ""
+        if (tabBar.selectedItem?.tag == 1) {
+            url = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=20&country=us&apikey=renaqk7mwx4v3vfj3g67xmcj"
+
+        }
+        else {
+            url = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=renaqk7mwx4v3vfj3g67xmcj&limit=20&country=us"
+        }
+
         var request = NSURLRequest(URL: NSURL(string:url))
         var session = NSURLSession.sharedSession()
         session.dataTaskWithRequest(request,
@@ -127,6 +138,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         shouldReloadTableForSearchScope searchOption: Int) -> Bool {
         self.filterContentForSearchText(self.searchDisplayController!.searchBar.text, scope: "")
         return true
+    }
+
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+        refreshMovieList()
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -40,6 +40,15 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <tabBar contentMode="scaleToFill" selectionIndicatorImage="movies" id="aSu-xs-vkA">
+                                <rect key="frame" x="0.0" y="519" width="320" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem title="Movies" image="movies" id="e0U-AW-5CW"/>
+                                    <tabBarItem tag="1" title="DVDs" image="dvds" id="7Xa-I6-oVg"/>
+                                </items>
+                            </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -47,6 +56,7 @@
                     <connections>
                         <outlet property="networkErrorView" destination="7Qr-5x-xje" id="5iP-Ll-PDt"/>
                         <outlet property="searchDisplayController" destination="2wQ-2L-Iv7" id="t2j-MN-Iny"/>
+                        <outlet property="tabBar" destination="aSu-xs-vkA" id="9fj-x2-tMq"/>
                         <outlet property="tableView" destination="nNi-gG-EUL" id="Ox3-qI-8cn"/>
                         <segue destination="k5e-Nh-a2N" kind="push" identifier="detailView" id="6FW-zm-Uks"/>
                     </connections>
@@ -151,6 +161,10 @@
             <point key="canvasLocation" x="227" y="-35"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dvds" width="20" height="20"/>
+        <image name="movies" width="20" height="20"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

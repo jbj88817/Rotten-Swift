@@ -27,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIColor.imageWithColor(UIColor.blackColor())
         UINavigationBar.appearance().translucent = true
 
+        UITabBar.appearance().tintColor = UIColor.colorWithRGBHex(0xFFCC00)
+        UITabBar.appearance().barTintColor = UIColor.blackColor()
+        UITabBar.appearance().alpha = 0.8
+
         return true
     }
 
