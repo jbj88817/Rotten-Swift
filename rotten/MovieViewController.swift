@@ -31,7 +31,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         searchDisplayController!.searchBar.barTintColor = UIColor.blackColor()
 
-        self.refreshControl.attributedTitle = NSAttributedString(string: "Updating Movie List...")
+        refreshControl.backgroundColor = UIColor.blackColor()
+        refreshControl.tintColor = UIColor.colorWithRGBHex(0xFFCC00)
         refreshControl.addTarget(self, action: "refreshMovieList", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
 
@@ -40,6 +41,13 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         searchDisplayController!.searchResultsTableView.registerNib(UINib(nibName: "MovieCell", bundle: nil), forCellReuseIdentifier: "MovieCell")
 
         refreshMovieList()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if tableView.indexPathForSelectedRow() != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        }
     }
 
     func refreshMovieList() {
@@ -171,6 +179,11 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         var cell = tableView.dequeueReusableCellWithIdentifier("MovieCell") as MovieCell
 
         cell.accessoryType = UITableViewCellAccessoryType.None
+
+        var customSelectionView = UIView(frame: cell.frame)
+        customSelectionView.backgroundColor = UIColor.colorWithRGBHex(0xFFCC00)
+        cell.selectedBackgroundView = customSelectionView
+
         cell.posterView.alpha = 0
 
         var movie :NSDictionary = NSDictionary()

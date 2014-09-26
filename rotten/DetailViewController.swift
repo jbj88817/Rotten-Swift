@@ -50,6 +50,10 @@ class DetailViewController: UIViewController {
                         var posters = self.movie["posters"] as NSDictionary
                         var posterUrl = posters["original"] as String
 
+                        if posterUrl.lowercaseString.rangeOfString("tmb.jpg") != nil {
+                            posterUrl = posterUrl.stringByReplacingOccurrencesOfString("tmb.jpg", withString: "ori.jpg", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                        }
+
                         self.navigationItem.title = self.movie["title"] as? String
                         self.titleLabel.text = self.movie["title"] as? String
                         self.synopsisLabel.text = self.movie["synopsis"] as? String
