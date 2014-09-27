@@ -17,15 +17,19 @@ Completed user stories:
  * [x] Optional: Customize the navigation bar
  * [x] Optional: Add a tab bar for Box Office and DVD
  * [x] Optional: Add a search bar
+  
+
+Stories not implemented:
+ * For the large poster, load the low-res image first, switch to high-res when complete
 
 
 Notes:
 
-None
+No autolayout implemented, some UI elements might not be aligned properly.
 
-Walkthrough of all user stories:
+Walkthrough of most of the  user stories (Network error not shown):
 
-![Video Walkthrough](anim_rotten_tomatoes.gif)
+![Video Walkthrough](rotten.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
